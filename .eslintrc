@@ -1,0 +1,47 @@
+{
+	"root": true,
+
+	"parser": "babel-eslint",
+
+	"env": {
+		"es6": true,
+		"node": true
+	},
+
+	"ecmaFeatures": {
+		"jsx": true
+	},
+
+	"plugins": [
+		"react",
+		"react-native"
+	],
+
+	"extends": [
+		"eslint:recommended",
+    "plugin:react/recommended",
+		"plugin:react-native/all"
+	],
+
+	"rules": {
+		"react-native/no-unused-styles": 2,
+		"react-native/split-platform-components": 2,
+		"react-native/no-inline-styles": 2,
+		"react-native/no-color-literals": 2,
+		"import/no-unresolved": "off",
+		"import/extensions": "off",
+		"react/jsx-filename-extension": [ "error", {
+			"extensions": [".js", ".jsx"]
+		}],
+		"react/prop-types": [ "error", {
+			"ignore": ["router", "params"]
+		}],
+		"class-methods-use-this": "off",
+		"no-console": "error",
+		"no-underscore-dangle": "error",
+		"no-extend-native": [ "error", {
+			"exceptions": ["Number"]
+		}],
+		"linebreak-style": "off"
+	}
+}

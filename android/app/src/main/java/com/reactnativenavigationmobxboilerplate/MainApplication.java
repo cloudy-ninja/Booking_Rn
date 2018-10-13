@@ -1,9 +1,10 @@
-package com.reactnativenavigationmobxboilerplate;
+package com.booking;
 
 import android.app.Application;
 import android.support.annotation.Nullable;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
