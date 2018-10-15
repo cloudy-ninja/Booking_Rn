@@ -1,66 +1,104 @@
-// @flow
-
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-  AppRegistry,
-  StyleSheet,
-  Text,
   View,
-  Button,
+  Text,
+  TouchableOpacity,
+  Platform
 } from 'react-native';
-import { inject, observer } from 'mobx-react/native';
+import glamorous from 'glamorous-native';
+import Constants from '../../global/Constants';
 
-import Constants   from '../../global/Constants';
-import CounterView from '../components/Counter';
+const Container = glamorous(View)({
+  flex: 1,
+  backgroundColor: '#ffffff',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+})
 
-@inject('App', 'Counter') @observer
-export default class Drawer extends Component {
+const WrapFirst = glamorous(View)({
+  flexDirection: 'column',
+  marginTop: 50,
+})
+
+const WrapSecond = glamorous(View)({
+  flexDirection: 'column',
+  marginBottom: 20,
+})
+
+const Button = glamorous(TouchableOpacity)({
+  alignItems: 'center',
+  borderStyle: 'solid',
+  borderBottomWidth: 1,
+  borderBottomColor: 'black'
+})
+
+const ButtonText = glamorous(Text)({
+  fontSize: 30,
+  color: 'black',
+})
+
+const { object } = PropTypes;
+class Drawer extends Component {
+  static propTypes = {
+    navigator: object,
+  }
+
+  constructor(props) {
+    super(props);
+  }
+
+  login = () => {
+    const { navigator } = this.props;
+    navigator.toggleDrawer({
+      side: 'right',
+      animated: true
+    });
+    Constants.rootNavigator.showModal({
+      ...Constants.Screens.LOGIN_SCREEN,
+      navigatorStyle: {
+        navBarHidden: false
+      }
+    })
+  }
+
+  register = () => {
+    const { navigator } = this.props;
+    navigator.toggleDrawer({
+      side: 'right',
+      animated: true
+    });
+    Constants.rootNavigator.showModal({
+      ...Constants.Screens.REGISTER_SCREEN,
+      navigatorStyle: {
+        navBarHidden: false
+      }
+    })
+  }
+
+
   render() {
-    const { App, Counter } = this.props;
-
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Drawer
-        </Text>
-
-        <CounterView
-          count={Counter.count}
-          onPlus={() => Counter.onPlus()}
-          onMinus={() => Counter.onMinus()}
-        />
-
-        <Button
-          title={`Push new screen in Tab 1`}
-          onPress={() => {
-            // this is made for iOS based on this issue -> https://github.com/wix/react-native-navigation/issues/1143
-            App.rootNavigator.push({
-              screen: Constants.Screens.PUSHED_SCREEN.screen,
-              title: 'Pushed Screen from Drawer'
-            });
-            // for Android you can use this.props.navigator.push({ ... })
-          }}
-        />
-      </View>
+      <Container>
+        <WrapFirst>
+          <Button onPress={() => this.register()}>
+            <ButtonText>{`Register`}</ButtonText>
+          </Button>
+          <Button onPress={() => this.login()}>
+            <ButtonText>{`Login`}</ButtonText>
+          </Button>
+          <Button onPress={() => {}}>
+            <ButtonText>{`Book`}</ButtonText>
+          </Button>
+        </WrapFirst>
+        <WrapSecond>
+          <Button onPress={() => {}}>
+            <ButtonText>{`Logout`}</ButtonText>
+          </Button>
+        </WrapSecond>
+      </Container>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+export default Drawer;

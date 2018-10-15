@@ -9,5 +9,5 @@ export default {
   navBarButtonColor     : Constants.Colors.tintColor,
   navBarBackgroundColor : Constants.Colors.backgroundColor,
   screenBackgroundColor : Constants.Colors.backgroundColor,
-  statusBarColor        : Constants.Colors.tintColor,
+  navBarHidden: true
 }

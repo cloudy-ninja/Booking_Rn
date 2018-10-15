@@ -5,13 +5,13 @@ import { Provider } from 'mobx-react/native';
 const SPECIAL_REACT_KEYS = { children: true, key: true, ref: true };
 
 export default class MobxRnnProvider extends Provider {
-  props: {
-    store: Object
-  };
+  // props: {
+  //   store: Object
+  // };
 
-  context: {
-    mobxStores: Object
-  };
+  // context: {
+  //   mobxStores: Object
+  // };
 
   getChildContext() {
     const stores = {};

@@ -1,8 +1,7 @@
 // @flow
-
+const PATH = '../../../img/'
 export default {
-  TAB_1          : require('../../../img/one.png'),
-  TAB_1_selected : require('../../../img/one_selected.png'),
 
-  SIDE_MENU      : require('../../../img/navicon_menu.png'),
+  SIDE_MENU      : require(`${PATH}navicon_menu.png`),
+  ICON_RECIPE_BACK : require(`${PATH}recipe-back.png`),
 }

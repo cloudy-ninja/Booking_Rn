@@ -5,8 +5,8 @@ import Stores    from '../../../stores';
 
 export default {
   leftButtons: Stores.App.isAndroid ? [{ id:'cancel' }] : [{
-    id    : 'cancel',
-    title : 'Cancel',
+    id    : 'back',
+    icon  : Constants.Images.ICON_RECIPE_BACK,
   }],
 
   // rightButtons: [{

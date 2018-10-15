@@ -4,132 +4,146 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  Button,
   TextInput,
-  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
 } from 'react-native';
-import { inject, observer } from 'mobx-react/native';
 
 import NavButtons from '../../global/NavButtons';
 import NavBar     from '../../global/NavBar';
 import Constants  from '../../global/Constants';
+import PropTypes from 'prop-types';
+import glamorous from 'glamorous-native';
 
-type Props = {
-  withCancelButton : boolean,
+const Container = glamorous(View)({
+  flex: 1,
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'flex-start',
+  paddingHorizontal: 10,
+})
+
+const SignInText = glamorous(Text)({
+  fontSize: 30,
+  fontWeight: '400',
+})
+
+const SignButton = glamorous(TouchableOpacity)({
+  alignItems: "center",
+  padding: 15,
+  marginTop: Constants.platform === 'ios' ? 20 : 10,
+  marginBottom: 10,
+  borderRadius: 10,
+  shadowColor: Constants.Colors.black,
+  shadowOffset: { width: 0, height: 3 },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+  backgroundColor: Constants.Colors.darkSkyBlue,
+  elevation: 3,
+  width: '100%'
+})
+
+const Avoid = {
+  flex: 1,
 }
 
-type State = {
-  username: string,
-  password: string,
-}
+const InputView = glamorous(View)({
+  flexDirection: "column",
+  justifyContent: "flex-start",
+  alignItems: 'flex-start',
+  marginVertical: 10,
+  paddingHorizontal: 10,
+  borderStyle: "solid",
+  borderColor: Constants.Colors.marineTwo,
+  borderWidth: 1,
+  width: '100%',
+  borderRadius: 5,
+})
 
-@inject('App', 'Account') @observer
+
+const Edit = {
+  width: '100%',
+  fontSize: 16,
+  height: 40
+};
+
+const ForgotButton = glamorous(TouchableOpacity)({
+  justifyContent: 'flex-start',
+  marginTop: 10,
+})
+
+const ForgotText = glamorous(Text)({
+  fontSize: 16,
+  color: Constants.Colors.skyBlue
+})
+
+const { object } = PropTypes;
 class LoginScreen extends Component {
   static navigatorButtons = NavButtons.Login;
   static navigatorStyle   = NavBar.Default;
 
-  state: State;
+  static propTypes = {
+    navigator: object,
+  }
 
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
-
-    this.state = {
-      username: '',
-      password: '',
-    }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }
 
-  componentDidMount() {
-    this.handleVisibilityOfNavButtons();
-  }
-
-  onNavigatorEvent = (event: { id: string }) => {
-    const { withCancelButton } = this.props;
-
-    switch (event.id) {
-      case 'cancel':
-        this.dismiss();
-        break;
-      case 'backPress':
-        if (withCancelButton) this.dismiss();
-        break;
-      default:
+  onNavigatorEvent = (event) => {
+    const { navigator } = this.props
+    if (event.id === 'back') {
+      navigator.dismissModal();
     }
   }
 
-  handleVisibilityOfNavButtons = () => {
-    const { navigator, withCancelButton, withAccountsButton } = this.props;
-
-    if (!withCancelButton) {
-      navigator.setButtons({ leftButtons: [] })
-    }
-  }
-
-  dismiss = () => {
-    const { navigator } = this.props;
-
-    navigator.dismissModal();
+  gotoForgotPage = () => {
+    Constants.rootNavigator.showModal({
+      ...Constants.Screens.FORGOT_SCREEN,
+      navigatorStyle: {
+        navBarHidden: false
+      }
+    })
   }
 
   render() {
-    const { Account, navigator } = this.props;
-    const { username, password } = this.state;
 
     return (
-      <View style={styles.container}>
-
-        <View style={styles.form}>
-
-          <TextInput
-            style={ styles.text_input }
-            onChangeText={ (username) => this.setState({ username }) }
-            value={ this.state.username }
-            placeholder={`Username`}
-          />
-
-          <TextInput
-            style={ styles.text_input }
-            onChangeText={ (password) => this.setState({ password }) }
-            value={ this.state.password }
-            placeholder={`Password`}
-            secureTextEntry={true}
-          />
-
-          <Button
-            title={`Log in`}
-            onPress={ () => Account.login(username, password).then( () => this.dismiss(), (error) => alert(error.message) ) }
-          />
-
-        </View>
-
-      </View>
+      <KeyboardAvoidingView style={Avoid} behavior="padding" enabled>
+        <Container>
+          <SignInText>{'Please sign in'}</SignInText>
+          <InputView>
+            <TextInput placeholder={'Email address'}
+                          style={Edit}
+                          placeholderTextColor={Constants.Colors.marineTwo}
+                          underlineColorAndroid={'transparent'}
+                          returnKeyType={'done'}
+                          autoCorrect={false}
+                          autoCapitalize={'none'}
+                          keyboardType={'email-address'}
+                          onSubmitEditing={() => {console.log('submmit====>')}}/>
+          </InputView>
+          <InputView>
+            <TextInput placeholder={'Password'}
+                          style={Edit}
+                          secureTextEntry
+                          placeholderTextColor={Constants.Colors.marineTwo}
+                          underlineColorAndroid={'transparent'}
+                          returnKeyType={'done'}
+                          autoCorrect={false}
+                          autoCapitalize={'none'}
+                          keyboardType={'email-address'}
+                          onSubmitEditing={() => {}}/>
+          </InputView>
+          <ForgotButton onPress={() => this.gotoForgotPage()}>
+            <ForgotText>{'Forgotten password?'}</ForgotText>
+          </ForgotButton>
+        </Container>
+      </KeyboardAvoidingView>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Constants.Colors.backgroundColor,
-  },
-  form: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  text_input: {
-    width: 250,
-    height: 40,
-    padding: 10,
-    margin: 5,
-
-    borderWidth: 0.5,
-    borderColor: Constants.Colors.blackColor,
-    borderRadius: 20,
-  }
-})
 
 export default LoginScreen;

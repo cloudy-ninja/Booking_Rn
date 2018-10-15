@@ -2,7 +2,11 @@
 
 import { observable, action } from 'mobx';
 
-class Store {
+class Counter {
+  constructor(getStores) {
+    this.getStores = getStores;
+  }
+
   @observable count = 0;
 
   @action onPlus() {
@@ -15,4 +19,4 @@ class Store {
 
 }
 
-export default new Store();
+export default Counter;

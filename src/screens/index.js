@@ -4,17 +4,18 @@ import { Navigation } from 'react-native-navigation';
 
 import Constants from '../global/Constants';
 
-import FirstTab     from './FirstTab';
-import SecondTab    from './SecondTab';
+import Login        from './LoginScreen';
 import Drawer       from './Drawer';
-import PushedScreen from './PushedScreen';
-import LoginScreen  from './LoginScreen';
+import HomeScreen   from './HomeScreen';
+import Register     from './Register';
+import Forgot       from './Forgot';
 
-export function registerScreens(store: {}, Provider: {}) {
-  Navigation.registerComponent(Constants.Screens.FIRST_TAB.screen,     () => FirstTab, store, Provider);
-  Navigation.registerComponent(Constants.Screens.SECOND_TAB.screen,    () => SecondTab, store, Provider);
+export function registerScreens(store, Provider) {
+  Navigation.registerComponent(Constants.Screens.HOME_SCREEN.screen, () => HomeScreen, store, Provider);
 
-  Navigation.registerComponent(Constants.Screens.DRAWER.screen,        () => Drawer, store, Provider);
-  Navigation.registerComponent(Constants.Screens.PUSHED_SCREEN.screen, () => PushedScreen, store, Provider);
-  Navigation.registerComponent(Constants.Screens.LOGIN_SCREEN.screen,  () => LoginScreen, store, Provider);
+  Navigation.registerComponent(Constants.Screens.DRAWER.screen,              () => Drawer, store, Provider);
+  Navigation.registerComponent(Constants.Screens.LOGIN_SCREEN.screen,        () => Login, store, Provider);
+  Navigation.registerComponent(Constants.Screens.REGISTER_SCREEN.screen,     () => Register, store, Provider);
+  Navigation.registerComponent(Constants.Screens.FORGOT_SCREEN.screen,       () => Forgot, store, Provider);
+
 }

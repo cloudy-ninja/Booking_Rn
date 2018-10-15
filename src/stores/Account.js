@@ -5,11 +5,19 @@ import { persist } from 'mobx-persist';
 
 import Models from './models';
 
-class Store {
+class Account {
+  constructor(getStores) {
+    this.getStores = getStores;
+  }
+
+  fetch = () => Promise.all([
+
+  ])
+
   @persist('object', Models.Account) @observable current = new Models.Account
   @persist @observable authorized = false;
 
-  @action login = (username: string, password: string) => {
+  @action login = (username, password) => {
     return new Promise((resolve, reject) => {
       if (username && password) {
         this.authorized = true;
@@ -22,7 +30,7 @@ class Store {
   }
 
   @action logout = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.authorized = false;
       this.current = {};
 
@@ -31,4 +39,4 @@ class Store {
   }
 }
 
-export default new Store();
+export default Account;

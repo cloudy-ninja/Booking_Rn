@@ -7,4 +7,4 @@ import Constants      from './global/Constants';
 import { registerScreens } from './screens';
 registerScreens(Stores, Provider);
 
-Constants.Global.startTabBasedApp()
+Constants.Global.startSingleScreenApp()

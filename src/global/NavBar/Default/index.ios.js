@@ -8,6 +8,6 @@ export default {
   navBarBackgroundColor : Constants.Colors.backgroundColor,
   navBarButtonColor     : Constants.Colors.tintColor,
   screenBackgroundColor : Constants.Colors.backgroundColor,
-
+  navBarHidden: true
   // statusBarTextColorScheme : Constants.Colors.statusBarColor, // make sure that in Xcode > project > Info.plist, the property View controller-based status bar appearance is set to YES
 }
