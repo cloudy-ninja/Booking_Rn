@@ -14,6 +14,6 @@ A simple boilerplate based on MobX (w/ Provider) instead of Redux and [wix/react
 1. Clone this repo: `git clone `
 2. Inside the directory , update npm. `npm update` followed by `npm install`
 3. Make sure yarn is installed. `npm install -g yarn` (https://yarnpkg.com/en/docs/install)
-2. Install node modules: `yarn`. 
-3. `react-native run-ios` or `react-native run-android` (if you have any errors while building the project for iOS, remove the `ios/build` directory or visit [facebook/react-native/issues/7308](https://github.com/facebook/react-native/issues/7308) for more information).
-4. Enjoy :)
+4. Install node modules: `yarn`. 
+5. `react-native run-ios` or `react-native run-android` (if you have any errors while building the project for iOS, remove the `ios/build` directory or visit [facebook/react-native/issues/7308](https://github.com/facebook/react-native/issues/7308) for more information).
+6. Enjoy :)
