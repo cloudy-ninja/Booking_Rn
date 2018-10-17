@@ -100,15 +100,16 @@ class ForgotScreen extends Component {
         <Container>
           <ResetPasswordText>{'Reset Password'}</ResetPasswordText>
           <InputView>
-            <TextInput placeholder={'Email address'}
-                          style={Edit}
-                          placeholderTextColor={Constants.Colors.marineTwo}
-                          underlineColorAndroid={'transparent'}
-                          returnKeyType={'done'}
-                          autoCorrect={false}
-                          autoCapitalize={'none'}
-                          keyboardType={'email-address'}
-                          onSubmitEditing={() => {console.log('submmit====>')}}/>
+            <TextInput
+              placeholder={'Email address'}
+              style={Edit}
+              placeholderTextColor={Constants.Colors.marineTwo}
+              underlineColorAndroid={'transparent'}
+              returnKeyType={'done'}
+              autoCorrect={false}
+              autoCapitalize={'none'}
+              keyboardType={'email-address'}
+              onSubmitEditing={() => {console.log('submmit====>')}}/>
           </InputView>
           <ResetButton>
             <ResetText>{'Reset Password'}</ResetText>

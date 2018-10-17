@@ -20,5 +20,9 @@ export default {
   HOME_SCREEN: {
     screen       : 'app.HomeScreen',
     title        : 'My Commany',
+  },
+  BOOKING_SCREEN: {
+    screen       : 'app.BookingScreen',
+    title        : 'Booking',
   }
 }

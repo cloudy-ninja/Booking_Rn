@@ -18,8 +18,8 @@ const Container = glamorous(View)({
 
 const { object } = PropTypes;
 @inject('App') @observer
-export default class Home extends Component {
-  static navigatorButtons = NavButtons.WithSideMenu;
+export default class BookingScreen extends Component {
+  static navigatorButtons = NavButtons.Login;
   static navigatorStyle   = NavBar.Default;
   static propTypes = {
     navigator: object,
@@ -32,24 +32,20 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     const { navigator } = this.props;
-    Constants.rootNavigator = navigator;
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }
 
   onNavigatorEvent = (event) => {
-    if (event.id === 'menu') {
-      this.props.navigator.toggleDrawer({
-        side: 'right',
-        animated: true
-      });
+    if (event.id === 'back') {
+      Constants.Global.startSingleScreenApp()
     }
   }
 
   render() {
     return (
       <Container>
-        <Text>{'Home'}</Text>
+        <Text>{'BookingScreen'}</Text>
       </Container>
     );
   }

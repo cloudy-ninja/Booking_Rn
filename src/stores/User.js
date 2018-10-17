@@ -10,19 +10,32 @@ class User {
 
   ])
 
-  @persist @observable token = '';
-  @observable userInfo;
+  @persist @observable cookie = '';
+  @persist @observable userInfo = {
+    id: '',
+    username: '',
+    rememberCheck: false,
+    email: '',
+    password: '',
+    created: '',
+  };
 
-  @action login = (data) => {
+  @action login = (data, password, checked, headers) => {
     //token
-    this.token = data.token
+    this.cookie = headers['set-cookie']
     //userInfo
-    this.userInfo = data.user
+    this.userInfo.email = data.email
+    this.userInfo.password = password
+    this.userInfo.rememberCheck = checked
+    this.userInfo.id = data.id
+    this.userInfo.username = data.login
+    this.userInfo.created = data.createdOn
   }
 
   @action logout = () => {
     //token
-    this.token = '';
+    this.cookie = ''
+    this.userInfo = {}
   }
 
 }

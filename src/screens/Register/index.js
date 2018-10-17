@@ -6,7 +6,9 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 
 import NavButtons from '../../global/NavButtons';
@@ -14,6 +16,7 @@ import NavBar     from '../../global/NavBar';
 import Constants  from '../../global/Constants';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous-native';
+import Api from '../../utils/Api';
 
 const Container = glamorous(View)({
   flex: 1,
@@ -82,6 +85,13 @@ class RegisterScreen extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      username: '',
+      email: '',
+      password: '',
+      repassword: '',
+      isReady: false,
+    }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }
@@ -89,55 +99,110 @@ class RegisterScreen extends Component {
   onNavigatorEvent = (event) => {
     const { navigator } = this.props
     if (event.id === 'back') {
-      navigator.dismissModal();
+      navigator.popToRoot();
+    }
+  }
+
+  UserRegister = async () => {
+    const { username, email, password, repassword} = this.state;
+    if(password !== repassword) {
+      Alert.alert('Please enter your password again');
+      return;
+    }
+    this.setState({isReady: !this.state.isReady})
+    try {
+      const { status, data } = await Api.register(username, email, password);
+      if (status === 200 && data === 'success') {
+        this.setState({isReady: !this.state.isReady})
+        this.props.navigator.push({
+          ...Constants.Screens.LOGIN_SCREEN,
+          navigatorStyle: {
+            navBarHidden: false
+          }
+        })
+        Alert.alert('Register successed!')
+      }
+    } catch (error) {
+      this.setState({isReady: !this.state.isReady})
+      if (error.response.status === 409) {
+        Alert.alert('Username or Email is invalid or already taken')
+      } else if (error.response.status === 400 || error.response.status === 404) {
+        Alert.alert('Server Not Found')
+      } else {
+        Alert.alert('Something Went Wrong!')
+      }
     }
   }
 
   render() {
-
+    const { isReady } = this.state;
     return (
+
       <KeyboardAvoidingView style={Avoid} behavior="padding" enabled>
-        <Container>
-          <SignupText>{'Please sign up'}</SignupText>
-          <InputView>
-            <TextInput placeholder={'Email address'}
-                          style={Edit}
-                          placeholderTextColor={Constants.Colors.marineTwo}
-                          underlineColorAndroid={'transparent'}
-                          returnKeyType={'done'}
-                          autoCorrect={false}
-                          autoCapitalize={'none'}
-                          keyboardType={'email-address'}
-                          onSubmitEditing={() => {console.log('submmit====>')}}/>
-          </InputView>
-          <InputView>
-            <TextInput placeholder={'Password'}
-                          style={Edit}
-                          secureTextEntry
-                          placeholderTextColor={Constants.Colors.marineTwo}
-                          underlineColorAndroid={'transparent'}
-                          returnKeyType={'done'}
-                          autoCorrect={false}
-                          autoCapitalize={'none'}
-                          keyboardType={'email-address'}
-                          onSubmitEditing={() => {}}/>
-          </InputView>
-          <InputView>
-            <TextInput placeholder={'Repeat Password'}
-                          style={Edit}
-                          secureTextEntry
-                          placeholderTextColor={Constants.Colors.marineTwo}
-                          underlineColorAndroid={'transparent'}
-                          returnKeyType={'done'}
-                          autoCorrect={false}
-                          autoCapitalize={'none'}
-                          keyboardType={'email-address'}
-                          onSubmitEditing={() => {}}/>
-          </InputView>
-          <RegisterButton>
-            <RegisterText>{'Register'}</RegisterText>
-          </RegisterButton>
-        </Container>
+      {
+        isReady
+          ? <ActivityIndicator size="small" color="#00ff00"/>
+          : <Container>
+              <SignupText>{'Please sign up'}</SignupText>
+              <InputView>
+                <TextInput
+                  placeholder={'Username'}
+                  style={Edit}
+                  placeholderTextColor={Constants.Colors.marineTwo}
+                  underlineColorAndroid={'transparent'}
+                  returnKeyType={'done'}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                  keyboardType={'email-address'}
+                  onChangeText={(username) => this.setState({username})}
+                  onSubmitEditing={() => {}}/>
+              </InputView>
+              <InputView>
+                <TextInput
+                  placeholder={'Email address'}
+                  style={Edit}
+                  placeholderTextColor={Constants.Colors.marineTwo}
+                  underlineColorAndroid={'transparent'}
+                  returnKeyType={'done'}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                  keyboardType={'email-address'}
+                  onChangeText={(email) => this.setState({email})}
+                  onSubmitEditing={() => {}}/>
+              </InputView>
+              <InputView>
+                <TextInput
+                  placeholder={'Password'}
+                  style={Edit}
+                  secureTextEntry
+                  placeholderTextColor={Constants.Colors.marineTwo}
+                  underlineColorAndroid={'transparent'}
+                  returnKeyType={'done'}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                  keyboardType={'email-address'}
+                  onChangeText={(password) => {this.setState({password})}}
+                  onSubmitEditing={() => {}}/>
+              </InputView>
+              <InputView>
+                <TextInput
+                  placeholder={'Repeat Password'}
+                  style={Edit}
+                  secureTextEntry
+                  placeholderTextColor={Constants.Colors.marineTwo}
+                  underlineColorAndroid={'transparent'}
+                  returnKeyType={'done'}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                  keyboardType={'email-address'}
+                  onChangeText={(repassword) => this.setState({repassword})}
+                  onSubmitEditing={() => {}}/>
+              </InputView>
+              <RegisterButton onPress={() => {this.UserRegister()}}>
+                <RegisterText>{'Register'}</RegisterText>
+              </RegisterButton>
+            </Container>
+      }
       </KeyboardAvoidingView>
     );
   }

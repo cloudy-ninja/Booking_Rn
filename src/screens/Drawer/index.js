@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import glamorous from 'glamorous-native';
 import Constants from '../../global/Constants';
+import { inject, observer } from 'mobx-react/native';
 
 const Container = glamorous(View)({
   flex: 1,
@@ -30,15 +31,19 @@ const Button = glamorous(TouchableOpacity)({
   alignItems: 'center',
   borderStyle: 'solid',
   borderBottomWidth: 1,
-  borderBottomColor: 'black'
+  borderBottomColor: 'black',
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
+  paddingVertical: 10,
 })
 
 const ButtonText = glamorous(Text)({
-  fontSize: 30,
+  fontSize: 20,
   color: 'black',
 })
 
 const { object } = PropTypes;
+@inject('User') @observer
 class Drawer extends Component {
   static propTypes = {
     navigator: object,
@@ -54,7 +59,7 @@ class Drawer extends Component {
       side: 'right',
       animated: true
     });
-    Constants.rootNavigator.showModal({
+    Constants.rootNavigator.push({
       ...Constants.Screens.LOGIN_SCREEN,
       navigatorStyle: {
         navBarHidden: false
@@ -68,7 +73,7 @@ class Drawer extends Component {
       side: 'right',
       animated: true
     });
-    Constants.rootNavigator.showModal({
+    Constants.rootNavigator.push({
       ...Constants.Screens.REGISTER_SCREEN,
       navigatorStyle: {
         navBarHidden: false
@@ -76,6 +81,32 @@ class Drawer extends Component {
     })
   }
 
+  redirectBooking = () => {
+    const { navigator } = this.props
+    navigator.toggleDrawer({
+      side: 'right',
+      animated: true
+    });
+    Constants.rootNavigator.push({
+      ...Constants.Screens.BOOKING_SCREEN,
+      navigatorStyle: {
+        navBarHidden: false
+      }
+    })
+  }
+
+  book = () => {
+    const { User } = this.props
+    User.cookie
+      ? this.redirectBooking()
+      : this.login()
+  }
+
+  logout = () => {
+    const { User } = this.props
+    User.logout();
+    Constants.Global.startSingleScreenApp();
+  }
 
   render() {
     return (
@@ -87,12 +118,12 @@ class Drawer extends Component {
           <Button onPress={() => this.login()}>
             <ButtonText>{`Login`}</ButtonText>
           </Button>
-          <Button onPress={() => {}}>
+          <Button onPress={() => this.book()}>
             <ButtonText>{`Book`}</ButtonText>
           </Button>
         </WrapFirst>
         <WrapSecond>
-          <Button onPress={() => {}}>
+          <Button onPress={() => this.logout()}>
             <ButtonText>{`Logout`}</ButtonText>
           </Button>
         </WrapSecond>
