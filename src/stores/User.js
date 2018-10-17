@@ -35,7 +35,6 @@ class User {
   @action logout = () => {
     //token
     this.cookie = ''
-    this.userInfo = {}
   }
 
 }

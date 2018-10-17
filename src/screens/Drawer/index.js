@@ -126,9 +126,13 @@ class Drawer extends Component {
           <Button onPress={() => this.register()}>
             <ButtonText>{`Register`}</ButtonText>
           </Button>
-          <Button onPress={() => this.login()}>
-            <ButtonText>{`Login`}</ButtonText>
-          </Button>
+          {
+            !User.cookie
+              ? <Button onPress={() => this.login()}>
+                  <ButtonText>{`Login`}</ButtonText>
+                </Button>
+              : null
+          }
           <Button onPress={() => this.book()}>
             <ButtonText>{`Book`}</ButtonText>
           </Button>
