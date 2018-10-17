@@ -4,11 +4,13 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Platform
+  Platform,
+  Alert,
 } from 'react-native';
 import glamorous from 'glamorous-native';
 import Constants from '../../global/Constants';
 import { inject, observer } from 'mobx-react/native';
+import Api from '../../utils/Api';
 
 const Container = glamorous(View)({
   flex: 1,
@@ -102,13 +104,22 @@ class Drawer extends Component {
       : this.login()
   }
 
-  logout = () => {
+  logout = async () => {
     const { User } = this.props
-    User.logout();
-    Constants.Global.startSingleScreenApp();
+    try {
+      const { status } = await Api.logout(User.userInfo.email, User.userInfo.password, User.userInfo.rememberCheck);
+      if (status === 200) {
+        User.logout();
+        Constants.Global.startSingleScreenApp();
+      }
+    } catch (error) {
+      Alert.alert('Something went wrong!')
+    }
+
   }
 
   render() {
+    const { User } = this.props
     return (
       <Container>
         <WrapFirst>
@@ -122,11 +133,15 @@ class Drawer extends Component {
             <ButtonText>{`Book`}</ButtonText>
           </Button>
         </WrapFirst>
-        <WrapSecond>
-          <Button onPress={() => this.logout()}>
-            <ButtonText>{`Logout`}</ButtonText>
-          </Button>
-        </WrapSecond>
+        {
+          User.cookie
+            ? <WrapSecond>
+                <Button onPress={() => this.logout()}>
+                  <ButtonText>{`Logout`}</ButtonText>
+                </Button>
+              </WrapSecond>
+            : null
+        }
       </Container>
     );
   }

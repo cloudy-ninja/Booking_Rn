@@ -33,4 +33,32 @@ export default class Api {
       }
     });
   }
+  //logout
+  static logout(username, password, checked) {
+    return axios({
+      method: 'get',
+      url: `${domain}api/users/logout`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        login: username,
+        password: password,
+        rememberMe: checked
+      }
+    });
+  }
+  //password reset
+  static resetPassword(username) {
+    return axios({
+      method: 'post',
+      url: `${domain}api/passwordreset`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: {
+        login: username
+      }
+    });
+  }
 }
