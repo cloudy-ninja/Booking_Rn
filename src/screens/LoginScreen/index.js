@@ -186,7 +186,13 @@ class LoginScreen extends Component {
       }
     } catch (error) {
       this.setState({isReady: false})
-      Alert.alert('Something went wrong!')
+      if (error.response.status === 403) {
+        Alert.alert('Username or Email is invalid or already taken')
+      } else if (error.response.status === 409) {
+        Alert.alert('Server Not Found')
+      } else {
+        Alert.alert('Something Went Wrong!')
+      }
     }
   }
 

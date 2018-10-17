@@ -6,7 +6,9 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 
 import NavButtons from '../../global/NavButtons';
@@ -14,6 +16,8 @@ import NavBar     from '../../global/NavBar';
 import Constants  from '../../global/Constants';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous-native';
+import { inject, observer } from 'mobx-react/native';
+import Api from '../../utils/Api';
 
 const Container = glamorous(View)({
   flex: 1,
@@ -72,6 +76,7 @@ const ResetText = glamorous(Text)({
 })
 
 const { object } = PropTypes;
+@inject('User') @observer
 class ForgotScreen extends Component {
   static navigatorButtons = NavButtons.Login;
   static navigatorStyle   = NavBar.Default;
@@ -82,7 +87,10 @@ class ForgotScreen extends Component {
 
   constructor(props) {
     super(props);
-
+    this.state = {
+      username: '',
+      isReady: false,
+    }
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }
 
@@ -93,28 +101,49 @@ class ForgotScreen extends Component {
     }
   }
 
-  render() {
+  ResetPassword = async (username) => {
+    const { navigator } = this.props
+    this.setState({isReady: true})
+    try {
+      const { status } = await Api.resetPassword(username);
+      if (status === 200) {
+        this.setState({isReady: false})
+        navigator.dismissModal()
+        Alert.alert('Password Reset Successful. Check your Email!')
+      }
+    } catch (error) {
+      this.setState({isReady: false})
+      Alert.alert('Something went wrong!')
+    }
+  }
 
+  render() {
+    const { isReady } = this.state
     return (
       <KeyboardAvoidingView style={Avoid} behavior="padding" enabled>
-        <Container>
-          <ResetPasswordText>{'Reset Password'}</ResetPasswordText>
-          <InputView>
-            <TextInput
-              placeholder={'Email address'}
-              style={Edit}
-              placeholderTextColor={Constants.Colors.marineTwo}
-              underlineColorAndroid={'transparent'}
-              returnKeyType={'done'}
-              autoCorrect={false}
-              autoCapitalize={'none'}
-              keyboardType={'email-address'}
-              onSubmitEditing={() => {console.log('submmit====>')}}/>
-          </InputView>
-          <ResetButton>
-            <ResetText>{'Reset Password'}</ResetText>
-          </ResetButton>
-        </Container>
+      {
+        isReady
+          ? <ActivityIndicator size="small" color="#00ff00"/>
+          : <Container>
+              <ResetPasswordText>{'Reset Password'}</ResetPasswordText>
+              <InputView>
+                <TextInput
+                  placeholder={'Username or Email address'}
+                  style={Edit}
+                  placeholderTextColor={Constants.Colors.marineTwo}
+                  underlineColorAndroid={'transparent'}
+                  returnKeyType={'done'}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                  keyboardType={'email-address'}
+                  onChangeText={(username) => this.setState({username})}
+                  onSubmitEditing={() => {}}/>
+              </InputView>
+              <ResetButton onPress={() => this.ResetPassword(this.state.username)}>
+                <ResetText>{'Reset Password'}</ResetText>
+              </ResetButton>
+            </Container>
+      }
       </KeyboardAvoidingView>
     );
   }
