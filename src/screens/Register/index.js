@@ -124,10 +124,12 @@ class RegisterScreen extends Component {
       }
     } catch (error) {
       this.setState({isReady: !this.state.isReady})
-      if (error.response.status === 409) {
-        Alert.alert('Username or Email is invalid or already taken')
-      } else if (error.response.status === 400 || error.response.status === 404) {
-        Alert.alert('Server Not Found')
+      if(error.response) {
+        if(error.response.status === 409) {
+          Alert.alert('Username or Email is invalid or already taken')
+        } else if (error.response.status === 400 || error.response.status === 404) {
+          Alert.alert('Server Not Found')
+        }
       } else {
         Alert.alert('Something Went Wrong!')
       }
