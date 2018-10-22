@@ -9,12 +9,15 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Alert,
+  Image
 } from 'react-native';
 import { CheckBox } from 'react-native-elements'
 
 import NavButtons from '../../global/NavButtons';
 import NavBar     from '../../global/NavBar';
 import Constants  from '../../global/Constants';
+import IONIcons   from 'react-native-vector-icons/Ionicons';
+import MAIcons    from 'react-native-vector-icons/MaterialIcons';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous-native';
 import { inject, observer } from 'mobx-react/native';
@@ -24,13 +27,35 @@ const Container = glamorous(View)({
   flex: 1,
   flexDirection: 'column',
   justifyContent: 'center',
-  paddingHorizontal: 10,
+  paddingHorizontal: 40,
+})
+
+const LogoView = glamorous(View)({
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingBottom: 25,
+})
+
+const LogoImage = glamorous(Image)({
+  // width: 280,
+  // height: 70,
+})
+
+const SignForm = glamorous(View)({
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center'
 })
 
 const SignInText = glamorous(Text)({
-  fontSize: 30,
+  fontSize: 18,
   fontWeight: '400',
 })
+
+const EmailIcon = glamorous(IONIcons)()
+
+const LockIcon = glamorous(IONIcons)()
 
 const SignButton = glamorous(TouchableOpacity)({
   alignItems: "center",
@@ -42,7 +67,7 @@ const SignButton = glamorous(TouchableOpacity)({
   shadowOffset: { width: 0, height: 3 },
   shadowOpacity: 0.2,
   shadowRadius: 3,
-  backgroundColor: Constants.Colors.darkSkyBlue,
+  backgroundColor: Constants.Colors.black,
   elevation: 3,
   width: '100%'
 })
@@ -52,23 +77,36 @@ const Avoid = {
 }
 
 const InputView = glamorous(View)({
-  flexDirection: "column",
+  flexDirection: "row",
   justifyContent: "flex-start",
-  alignItems: 'flex-start',
+  alignItems: 'center',
   marginVertical: 10,
   paddingHorizontal: 10,
-  borderStyle: "solid",
-  borderColor: Constants.Colors.marineTwo,
-  borderWidth: 1,
+  shadowColor: Constants.Colors.black,
+  shadowOffset: { width: 0, height: 3 },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+  backgroundColor: Constants.Colors.whiteTwo,
+  elevation: 3,
   width: '100%',
   borderRadius: 5,
 })
 
 
-const Edit = {
+const EditEmail = {
   width: '100%',
   fontSize: 16,
-  height: 40
+  height: 45,
+  paddingLeft: 10,
+  alignSelf: 'center',
+};
+
+const EditPassword = {
+  width: '100%',
+  fontSize: 16,
+  height: 45,
+  paddingLeft: 12,
+  alignSelf: 'center',
 };
 
 const ForgotButton = glamorous(TouchableOpacity)({
@@ -77,6 +115,7 @@ const ForgotButton = glamorous(TouchableOpacity)({
 
 const SignupButton = glamorous(TouchableOpacity)({
   alignItems: 'center',
+  marginTop: 10,
 })
 
 const SignupText = glamorous(Text)({
@@ -85,7 +124,7 @@ const SignupText = glamorous(Text)({
 })
 
 const ForgotText = glamorous(Text)({
-  fontSize: 16,
+  fontSize: 15,
   color: Constants.Colors.skyBlue
 })
 
@@ -93,8 +132,8 @@ const ForgotSignupView = glamorous(View)({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginTop: 10,
-  paddingHorizontal: 20,
+  marginVertical: 10,
+  width: '100%'
 })
 
 const CheckBoxStyle = {
@@ -163,20 +202,13 @@ class LoginScreen extends Component {
   }
 
   signin = async () => {
-    const { checked } = this.state
+    const { checked, email, password } = this.state
     const { User } = this.props
     this.setState({isReady: true})
     try {
-      User.userInfo.rememberCheck
-        ? [
-            this.email = User.userInfo.email,
-            this.password = User.userInfo.password
-          ]
-        : null
-
-      const { status, data, headers } = await Api.login(this.email, this.password, checked);
+      const { status, data, headers } = await Api.login(email, password, checked);
       if (status === 200) {
-        User.login(data, this.password, checked, headers)
+        User.login(data, password, checked, headers)
         this.setState({isReady: false})
         this.props.navigator.push({
           ...Constants.Screens.BOOKING_SCREEN,
@@ -200,21 +232,20 @@ class LoginScreen extends Component {
     }
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const { User } = this.props
 
      this.setState({ email: User.userInfo.rememberCheck
       ? User.userInfo.email
         ? User.userInfo.email
         : ''
-      : ''
-    })
-    this.setState({ password: User.userInfo.rememberCheck
+      : '',
+      password: User.userInfo.rememberCheck
       ? User.userInfo.password
         ? User.userInfo.password
         : ''
       : ''
-    })
+      })
   }
 
 
@@ -227,11 +258,18 @@ class LoginScreen extends Component {
         isReady
         ? <ActivityIndicator size="small" color="#00ff00"/>
         : <Container>
-            <SignInText>{'Please sign in'}</SignInText>
-            <InputView>
-              <TextInput
-                placeholder={'Username or Email address'}
-                style={Edit}
+            <LogoView>
+              <LogoImage
+                source={require('../../../img/logoText.png')}
+              />
+            </LogoView>
+            <SignForm>
+              <SignInText>{'Sign in'}</SignInText>
+              <InputView>
+                <EmailIcon name='ios-mail' size={24} color={'#000'}/>
+                <TextInput
+                placeholder={'Email'}
+                style={EditEmail}
                 placeholderTextColor={Constants.Colors.marineTwo}
                 underlineColorAndroid={'transparent'}
                 returnKeyType={'done'}
@@ -241,40 +279,42 @@ class LoginScreen extends Component {
                 onChangeText={(email) => this.setState({ email })}
                 keyboardType={'email-address'}
                 onSubmitEditing={() => {}}/>
-            </InputView>
-            <InputView>
-              <TextInput
-                placeholder={'Password'}
-                style={Edit}
-                secureTextEntry
-                placeholderTextColor={Constants.Colors.marineTwo}
-                underlineColorAndroid={'transparent'}
-                returnKeyType={'done'}
-                autoCorrect={false}
-                autoCapitalize={'none'}
-                value={password}
-                onChangeText={(password) => this.setState({ password })}
-                keyboardType={'email-address'}
-                onSubmitEditing={() => {}}/>
-            </InputView>
-            <ForgotSignupView>
-              <ForgotButton onPress={() => this.gotoForgotPage()}>
-                <ForgotText>{'Forgotten password?'}</ForgotText>
-              </ForgotButton>
-              <SignupButton onPress={() => this.gotoSignUp()}>
-                <SignupText>{'Sign up'}</SignupText>
-              </SignupButton>
-            </ForgotSignupView>
-            <CheckBox
-              containerStyle={CheckBoxStyle}
-              checked={this.state.checked}
-              title={'Remember me'}
-              textStyle={checkboxTextStyle}
-              onIconPress={() => this.setState({checked: !this.state.checked})}
-            />
+              </InputView>
+              <InputView>
+                <LockIcon name='md-lock' size={24} color={'#000'} />
+                <TextInput
+                  placeholder={'Password'}
+                  style={EditPassword}
+                  secureTextEntry
+                  placeholderTextColor={Constants.Colors.marineTwo}
+                  underlineColorAndroid={'transparent'}
+                  returnKeyType={'done'}
+                  autoCorrect={false}
+                  autoCapitalize={'none'}
+                  value={password}
+                  onChangeText={(password) => this.setState({ password })}
+                  keyboardType={'email-address'}
+                  onSubmitEditing={() => {}}/>
+              </InputView>
+              <ForgotSignupView>
+                <CheckBox
+                containerStyle={CheckBoxStyle}
+                checked={this.state.checked}
+                title={'Remember me'}
+                textStyle={checkboxTextStyle}
+                onIconPress={() => this.setState({checked: !this.state.checked})}
+                />
+                <ForgotButton onPress={() => this.gotoForgotPage()}>
+                  <ForgotText>{'Forgot Password?'}</ForgotText>
+                </ForgotButton>
+              </ForgotSignupView>
+            </SignForm>
             <SignButton onPress={() => this.signin()}>
-              <SignInButtonText>{'Sign in'}</SignInButtonText>
+              <SignInButtonText>{'SIGN IN'}</SignInButtonText>
             </SignButton>
+            <SignupButton onPress={() => this.gotoSignUp()}>
+              <SignupText>{'SIGN UP'}</SignupText>
+            </SignupButton>
           </Container>
       }
       </KeyboardAvoidingView>
