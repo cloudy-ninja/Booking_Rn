@@ -130,6 +130,8 @@ class LoginScreen extends Component {
     this.state = {
       checked: false,
       isReady: false,
+      email: '',
+      password: '',
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
@@ -186,29 +188,39 @@ class LoginScreen extends Component {
       }
     } catch (error) {
       this.setState({isReady: false})
-      if (error.response.status === 403) {
-        Alert.alert('Username or Email is invalid or already taken')
-      } else if (error.response.status === 409) {
-        Alert.alert('Server Not Found')
+      if(error.response) {
+        if (error.response.status === 403) {
+          Alert.alert('Username or Email is invalid or already taken')
+        } else if (error.response.status === 409 || error.response.status === 400) {
+          Alert.alert('Server Not Found')
+        }
       } else {
         Alert.alert('Something Went Wrong!')
       }
     }
   }
 
-  render() {
-    const { isReady } = this.state
+  componentDidMount = () => {
     const { User } = this.props
-    const email = User.userInfo.rememberCheck
+
+     this.setState({ email: User.userInfo.rememberCheck
       ? User.userInfo.email
         ? User.userInfo.email
         : ''
       : ''
-    const password = User.userInfo.rememberCheck
+    })
+    this.setState({ password: User.userInfo.rememberCheck
       ? User.userInfo.password
         ? User.userInfo.password
         : ''
       : ''
+    })
+  }
+
+
+  render() {
+    const { isReady, email, password } = this.state
+
     return (
       <KeyboardAvoidingView style={Avoid} behavior="padding" enabled>
       {
@@ -226,7 +238,7 @@ class LoginScreen extends Component {
                 autoCorrect={false}
                 autoCapitalize={'none'}
                 value={email}
-                onChangeText={(email) => this.email = email}
+                onChangeText={(email) => this.setState({ email })}
                 keyboardType={'email-address'}
                 onSubmitEditing={() => {}}/>
             </InputView>
@@ -241,7 +253,7 @@ class LoginScreen extends Component {
                 autoCorrect={false}
                 autoCapitalize={'none'}
                 value={password}
-                onChangeText={(password) => this.password = password}
+                onChangeText={(password) => this.setState({ password })}
                 keyboardType={'email-address'}
                 onSubmitEditing={() => {}}/>
             </InputView>

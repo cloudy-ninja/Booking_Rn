@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-               BuildableName = "booking-tvOS.app"
-               BlueprintName = "booking-tvOS"
-               ReferencedContainer = "container:booking.xcodeproj">
+               BuildableName = "Booking-tvOS.app"
+               BlueprintName = "Booking-tvOS"
+               ReferencedContainer = "container:Booking.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -43,9 +43,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "booking-tvOSTests.xctest"
-               BlueprintName = "booking-tvOSTests"
-               ReferencedContainer = "container:booking.xcodeproj">
+               BuildableName = "Booking-tvOSTests.xctest"
+               BlueprintName = "Booking-tvOSTests"
+               ReferencedContainer = "container:Booking.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -61,9 +61,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2D02E48F1E0B4A5D006451C7"
-               BuildableName = "booking-tvOSTests.xctest"
-               BlueprintName = "booking-tvOSTests"
-               ReferencedContainer = "container:booking.xcodeproj">
+               BuildableName = "Booking-tvOSTests.xctest"
+               BlueprintName = "Booking-tvOSTests"
+               ReferencedContainer = "container:Booking.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "booking-tvOS.app"
-            BlueprintName = "booking-tvOS"
-            ReferencedContainer = "container:booking.xcodeproj">
+            BuildableName = "Booking-tvOS.app"
+            BlueprintName = "Booking-tvOS"
+            ReferencedContainer = "container:Booking.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -94,9 +94,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "booking-tvOS.app"
-            BlueprintName = "booking-tvOS"
-            ReferencedContainer = "container:booking.xcodeproj">
+            BuildableName = "Booking-tvOS.app"
+            BlueprintName = "Booking-tvOS"
+            ReferencedContainer = "container:Booking.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -113,9 +113,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2D02E47A1E0B4A5D006451C7"
-            BuildableName = "booking-tvOS.app"
-            BlueprintName = "booking-tvOS"
-            ReferencedContainer = "container:booking.xcodeproj">
+            BuildableName = "Booking-tvOS.app"
+            BlueprintName = "Booking-tvOS"
+            ReferencedContainer = "container:Booking.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
