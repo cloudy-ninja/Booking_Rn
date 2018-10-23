@@ -22,9 +22,9 @@ import Api from '../../utils/Api';
 const Container = glamorous(View)({
   flex: 1,
   flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'flex-start',
-  paddingHorizontal: 10,
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  paddingHorizontal: 40,
 })
 
 const ResetButton = glamorous(TouchableOpacity)({
@@ -37,25 +37,24 @@ const ResetButton = glamorous(TouchableOpacity)({
   shadowOffset: { width: 0, height: 3 },
   shadowOpacity: 0.2,
   shadowRadius: 3,
-  backgroundColor: Constants.Colors.darkSkyBlue,
+  backgroundColor: Constants.Colors.black,
   elevation: 3,
   width: '100%'
 })
 
-const ResetPasswordText = glamorous(Text)({
-  fontSize: 30,
-  fontWeight: '400',
-})
-
 const InputView = glamorous(View)({
-  flexDirection: "column",
+  flexDirection: "row",
   justifyContent: "flex-start",
-  alignItems: 'flex-start',
-  marginVertical: 10,
+  alignItems: 'center',
+  marginTop: 40,
+  marginBottom: 10,
   paddingHorizontal: 10,
-  borderStyle: "solid",
-  borderColor: Constants.Colors.marineTwo,
-  borderWidth: 1,
+  shadowColor: Constants.Colors.black,
+  shadowOffset: { width: 0, height: 3 },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+  backgroundColor: Constants.Colors.whiteTwo,
+  elevation: 3,
   width: '100%',
   borderRadius: 5,
 })
@@ -63,7 +62,8 @@ const InputView = glamorous(View)({
 const Edit = {
   width: '100%',
   fontSize: 16,
-  height: 40
+  height: 45,
+  alignSelf: 'center',
 };
 
 const Avoid = {
@@ -125,7 +125,6 @@ class ForgotScreen extends Component {
         isReady
           ? <ActivityIndicator size="small" color="#00ff00"/>
           : <Container>
-              <ResetPasswordText>{'Reset Password'}</ResetPasswordText>
               <InputView>
                 <TextInput
                   placeholder={'Username or Email address'}

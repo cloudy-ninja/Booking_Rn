@@ -11,7 +11,7 @@ export default {
   },
   FORGOT_SCREEN: {
     screen : 'app.ForgotScreen',
-    title  : 'Forgot',
+    title  : 'Forgot Password',
   },
   DRAWER: {
     screen : 'app.DrawerScreen',

@@ -294,7 +294,6 @@ class LoginScreen extends Component {
                   autoCapitalize={'none'}
                   value={password}
                   onChangeText={(password) => this.setState({ password })}
-                  keyboardType={'email-address'}
                   onSubmitEditing={() => {}}/>
               </InputView>
               <ForgotSignupView>

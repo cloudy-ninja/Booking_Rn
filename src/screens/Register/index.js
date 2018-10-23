@@ -148,8 +148,10 @@ class RegisterScreen extends Component {
       this.setState({isReady: !this.state.isReady})
       if(error.response) {
         if(error.response.status === 409) {
-          Alert.alert('Username or Email is invalid or already taken')
-        } else if (error.response.status === 400 || error.response.status === 404) {
+          Alert.alert('Your username or password is incorrect. Try again')
+        } else if (error.response.status === 400) {
+          Alert.alert('Username is too short!')
+        } else if (error.response.status === 404) {
           Alert.alert('Server Not Found')
         }
       } else {
@@ -161,7 +163,6 @@ class RegisterScreen extends Component {
   render() {
     const { isReady } = this.state;
     return (
-
       <KeyboardAvoidingView style={Avoid} behavior="padding" enabled>
       {
         isReady
@@ -210,7 +211,6 @@ class RegisterScreen extends Component {
                   returnKeyType={'done'}
                   autoCorrect={false}
                   autoCapitalize={'none'}
-                  keyboardType={'email-address'}
                   onChangeText={(password) => {this.setState({password})}}
                   onSubmitEditing={() => {}}/>
               </InputView>
