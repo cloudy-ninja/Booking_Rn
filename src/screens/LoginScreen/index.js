@@ -51,6 +51,7 @@ const SignForm = glamorous(View)({
 const SignInText = glamorous(Text)({
   fontSize: 18,
   fontWeight: '400',
+  color: Constants.Colors.blackColor
 })
 
 const EmailIcon = glamorous(IONIcons)()

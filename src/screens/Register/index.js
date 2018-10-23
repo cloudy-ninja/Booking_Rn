@@ -9,10 +9,12 @@ import {
   KeyboardAvoidingView,
   ActivityIndicator,
   Alert,
+  Image
 } from 'react-native';
 
 import NavButtons from '../../global/NavButtons';
 import NavBar     from '../../global/NavBar';
+import IONIcons   from 'react-native-vector-icons/Ionicons';
 import Constants  from '../../global/Constants';
 import PropTypes from 'prop-types';
 import glamorous from 'glamorous-native';
@@ -22,9 +24,24 @@ const Container = glamorous(View)({
   flex: 1,
   flexDirection: 'column',
   justifyContent: 'center',
-  alignItems: 'flex-start',
-  paddingHorizontal: 10,
+  alignItems: 'center',
+  paddingHorizontal: 40,
 })
+
+const LogoView = glamorous(View)({
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingBottom: 25,
+})
+
+const UserIcon = glamorous(IONIcons)()
+
+const EmailIcon = glamorous(IONIcons)()
+
+const LockIcon = glamorous(IONIcons)()
+
+const KeyIcon = glamorous(IONIcons)()
 
 const RegisterButton = glamorous(TouchableOpacity)({
   alignItems: "center",
@@ -36,25 +53,28 @@ const RegisterButton = glamorous(TouchableOpacity)({
   shadowOffset: { width: 0, height: 3 },
   shadowOpacity: 0.2,
   shadowRadius: 3,
-  backgroundColor: Constants.Colors.darkSkyBlue,
+  backgroundColor: Constants.Colors.black,
   elevation: 3,
   width: '100%'
 })
 
 const SignupText = glamorous(Text)({
-  fontSize: 30,
+  fontSize: 18,
   fontWeight: '400',
+  color: Constants.Colors.blackColor
 })
 
 const InputView = glamorous(View)({
-  flexDirection: "column",
+  flexDirection: "row",
   justifyContent: "flex-start",
-  alignItems: 'flex-start',
+  alignItems: 'center',
   marginVertical: 10,
   paddingHorizontal: 10,
-  borderStyle: "solid",
-  borderColor: Constants.Colors.marineTwo,
-  borderWidth: 1,
+  shadowColor: Constants.Colors.black,
+  shadowOffset: { width: 0, height: 3 },
+  shadowOpacity: 0.2,
+  shadowRadius: 3,
+  backgroundColor: Constants.Colors.whiteTwo,
   width: '100%',
   borderRadius: 5,
 })
@@ -62,7 +82,9 @@ const InputView = glamorous(View)({
 const Edit = {
   width: '100%',
   fontSize: 16,
-  height: 40
+  height: 45,
+  paddingLeft: 10,
+  alignSelf: 'center',
 };
 
 const Avoid = {
@@ -145,10 +167,14 @@ class RegisterScreen extends Component {
         isReady
           ? <ActivityIndicator size="small" color="#00ff00"/>
           : <Container>
-              <SignupText>{'Please sign up'}</SignupText>
+              <LogoView>
+                <Image source={require('../../../img/logoText.png')}/>
+              </LogoView>
+              <SignupText>{'Sign up'}</SignupText>
               <InputView>
+                <UserIcon name='md-person' size={24} color={'#000'}/>
                 <TextInput
-                  placeholder={'Username'}
+                  placeholder={'Name'}
                   style={Edit}
                   placeholderTextColor={Constants.Colors.marineTwo}
                   underlineColorAndroid={'transparent'}
@@ -160,8 +186,9 @@ class RegisterScreen extends Component {
                   onSubmitEditing={() => {}}/>
               </InputView>
               <InputView>
+                <EmailIcon name='ios-mail' size={24} color={'#000'}/>
                 <TextInput
-                  placeholder={'Email address'}
+                  placeholder={'Email'}
                   style={Edit}
                   placeholderTextColor={Constants.Colors.marineTwo}
                   underlineColorAndroid={'transparent'}
@@ -173,6 +200,7 @@ class RegisterScreen extends Component {
                   onSubmitEditing={() => {}}/>
               </InputView>
               <InputView>
+                <LockIcon name='md-lock' size={24} color={'#000'} />
                 <TextInput
                   placeholder={'Password'}
                   style={Edit}
@@ -187,6 +215,7 @@ class RegisterScreen extends Component {
                   onSubmitEditing={() => {}}/>
               </InputView>
               <InputView>
+                <KeyIcon name='ios-key' size={24} color={'#000'}/>
                 <TextInput
                   placeholder={'Repeat Password'}
                   style={Edit}
@@ -201,7 +230,7 @@ class RegisterScreen extends Component {
                   onSubmitEditing={() => {}}/>
               </InputView>
               <RegisterButton onPress={() => {this.UserRegister()}}>
-                <RegisterText>{'Register'}</RegisterText>
+                <RegisterText>{'SIGN UP'}</RegisterText>
               </RegisterButton>
             </Container>
       }
